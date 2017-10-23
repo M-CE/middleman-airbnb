@@ -1,0 +1,101 @@
+<h2 id="setup">Setup</h2>
+
+<p>Ensure you have the following gems in your Rails <code>Gemfile</code></p>
+
+<p><code>ruby
+# Gemfile
+gem 'bootstrap-sass'
+gem 'font-awesome-sass'
+gem 'simple_form'
+gem 'autoprefixer-rails'
+gem 'jquery-rails' # Add this line if you use Rails 5.1
+</code></p>
+
+<p>In your terminal, generate SimpleForm Bootstrap config.</p>
+
+<p><code>bash
+$ bundle install
+$ rails generate simple_form:install --bootstrap
+</code></p>
+
+<p>Then replace Rails' stylesheets by Le Wagon's stylesheets:</p>
+
+<p><code>
+$ rm -rf app/assets/stylesheets
+$ curl -L https://github.com/lewagon/stylesheets/archive/master.zip &gt; stylesheets.zip
+$ unzip stylesheets.zip -d app/assets &amp;&amp; rm stylesheets.zip &amp;&amp; mv app/assets/rails-stylesheets-master app/assets/stylesheets
+</code></p>
+
+<p>Don't forget the sprockets directives in <code>assets/javascripts/application.js</code></p>
+
+<p>```javascript
+// app/assets/javascripts/application.js</p>
+
+<p>//= require jquery
+//= require jquery_ujs
+//= require bootstrap-sprockets
+//= require_tree .
+```</p>
+
+<p>And the viewport in the layout</p>
+
+<p>```html
+<!-- app/views/layouts/application.html.erb --></p>
+<head>
+  <!-- Add these line for detecting device width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+</head>
+<p>```</p>
+
+<h2 id="adding-new-scss-files">Adding new <code>.scss</code> files</h2>
+
+<p>Look at your main <code>application.scss</code> file to see how SCSS files are imported. There should <strong>not</strong> be a <code>*= require_tree .</code> line in the file.</p>
+
+<p>```scss
+// app/assets/stylesheets/application.scss</p>
+
+<p>// Graphical variables
+@import "config/fonts";
+@import "config/colors";
+@import "config/bootstrap_variables";</p>
+
+<p>// External libraries
+@import "bootstrap-sprockets";
+@import "bootstrap";
+@import "font-awesome-sprockets";
+@import "font-awesome";</p>
+
+<p>// Your CSS partials
+@import "layouts/index";
+@import "components/index";
+@import "pages/index";
+```</p>
+
+<p>For every folder (<strong><code>components</code></strong>, <strong><code>layouts</code></strong>, <strong><code>pages</code></strong>), there is one <code>_index.scss</code> partial which is responsible for importing all the other partials of its folder.</p>
+
+<p><strong>Example 1</strong>: Let's say you add a new <code>_contact.scss</code> file in <strong><code>pages</code></strong> then modify <code>pages/_index.scss</code> as:</p>
+
+<p><code>scss
+// pages/_index.scss
+@import "home";
+@import "contact";
+</code></p>
+
+<p><strong>Example 2</strong>: Let's say you add a new <code>_sidebar.scss</code> file in <strong><code>layouts</code></strong> then modify <code>layouts/_index.scss</code> as:</p>
+
+<p><code>scss
+// layouts/_index.scss
+@import "sidebar";
+</code></p>
+
+<h2 id="navbar-template">Navbar template</h2>
+
+<p>Our <code>layouts/_navbar.scss</code> code works well with our home-made ERB template which you can find here:</p>
+
+<ul>
+  <li><a href="https://github.com/lewagon/awesome-navbars/blob/master/templates/_navbar_wagon_without_login.html.erb">version without login</a>.</li>
+  <li><a href="https://github.com/lewagon/awesome-navbars/blob/master/templates/_navbar_wagon.html.erb">version with login</a>.</li>
+</ul>
+
+<p>Don't forget that <code>*.html.erb</code> files go in the <code>app/views</code> folder, and <code>*.scss</code> files go in the <code>app/assets/stylesheets</code> folder. Also, our navbar have a link to the <code>root_path</code>, so make sure that you have a <code>root to: "controller#action"</code> route in your <code>config/routes.rb</code> file.</p>
