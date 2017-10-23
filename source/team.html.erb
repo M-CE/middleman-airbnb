@@ -1,7 +1,9 @@
 <ul class="list-inline text-center">
-	<% ["dahl", "isaiah", "misterdahl"].each do |gh_username| %>
+	<% %w(Isaiah Dahl, Mary Eyb).each do |gh_username| %>
+	
 	<li>
-		<%= image_tag "user.jpeg", class: "img-rounded avatar" %>
+		<%= image_tag "user.jpeg", class: "img-circle img-small-size" %>
+		<%= image_tag "profile.jpeg", class: "img-circle img-small-size" %>
 		<h3><%= gh_username.capitalize %></h3>
 	</li>
 	<% end %>
